@@ -5,11 +5,12 @@ from flask import (
 )
 
 from .generator_of_currency import get_currency_network
+import json
 
 APP = Flask(__name__)
 
-@app.route("/get_currency", methods=["POST", "GET"])
-def get_currency(request):
+@APP.route("/get_currency", methods=["POST", "GET"])
+def get_currency():
     """
         {
             "timeline": {
@@ -23,14 +24,16 @@ def get_currency(request):
         }
     """
     if request.method == "POST":
-        timeline_begin = request.data["timeline"]["begin"]
-        timeline_end = request.data["timeline"]["end"]
-        currency_name = request.data["currency"]
+        data = request.json
+        print(data)
+        timeline_begin = data["begin"]
+        timeline_end = data["end"]
+        currency_names = data["currency_names"]
 
         currencies = get_currency_network(
             timeline_begin,
             timeline_end,
-            currency_name
+            currency_names
         )
 
         response_data = {
