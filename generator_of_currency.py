@@ -40,21 +40,8 @@ def get_currency():
             timeline_end,
             currency_names
         )
-
-        #date_begin = datetime.strptime(timeline_begin + " 00:00:00", "%d-%m-%Y %H:%M:%S")
-        #date_end = datetime.strptime(timeline_end, + " 00:00:00", "%d-%m-%Y %H:%M:%S")
-        print(timeline_begin)
-        #date_begin = datetime(*[int(item) for item in timeline_begin.split('-')]).strftime("%d-%m-%Y")
         date_begin = datetime.fromtimestamp()
-        print(date_begin)
-        #print(date_end)
-        #currencies = requests.get("https://www.nbrb.by/api/exrates/rates?ondate=2019-7-6&periodicity=0").text
         currencies = []
-
-
-        print(currencies)
-        #currencies = requests.get("https://www.nbrb.by/api/exrates/rates/298?ondate=2016-7-5")
-        print(currencies)
         response_data = {
             "currencies": currencies
         }
