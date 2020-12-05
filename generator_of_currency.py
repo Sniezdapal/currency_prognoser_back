@@ -5,7 +5,6 @@ from flask import (
 )
 
 from datetime import datetime
-from generator_of_currency import get_currency_network
 import json
 import requests
 
@@ -57,11 +56,8 @@ def buid_chart_data(begin_date, end_date):
         for currency_name in currency_names:
             currency_name = currency_name.upper()
             date_string = date_begin.strftime("%Y-%m-%d")
-            #print(date_string)
             currency_name = 145
-            #print(currency_name)
             url = f"https://www.nbrb.by/api/exrates/rates/{currency_numbers[currency_name]}?ondate={date_string}"
-            #print(url)
             currency = requests.get(url).text
             currencies.append(currency)
 
