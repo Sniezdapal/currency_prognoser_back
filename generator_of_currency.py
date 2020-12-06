@@ -13,7 +13,7 @@ CURRENCY_NUMBERS = {
     "usd": 145,
     "eur": 19,
 }
-
+BANK_URL = "https://www.nbrb.by/api/exrates/rates/{0}?ondate={1}"
 
 @APP.route("/get_currency", methods=["POST", "GET"])
 def get_currency():
@@ -29,9 +29,8 @@ def get_currency():
     """
     if request.method == "POST":
         data = request.json
-        print(data)
-        timeline_begin = data["begin"]
-        timeline_end = data["end"]
+        timeline_begin = datetime.fromtimestamp(int(data["begin"]))
+        timeline_end = datetime.fromtimestamp(int(data["end"]))
         currency_names = data["currency_names"]
 
         currencies = get_currency_network(
@@ -39,8 +38,6 @@ def get_currency():
             timeline_end,
             currency_names
         )
-        date_begin = datetime.fromtimestamp()
-        currencies = []
         response_data = {
             "currencies": currencies
         }
@@ -57,7 +54,7 @@ def buid_chart_data(begin_date, end_date):
             currency_name = currency_name.upper()
             date_string = date_begin.strftime("%Y-%m-%d")
             currency_name = 145
-            url = f"https://www.nbrb.by/api/exrates/rates/{currency_numbers[currency_name]}?ondate={date_string}"
+            url = BANK_URL.format(currency_numbers[currency_name], date_string)
             currency = requests.get(url).text
             currencies.append(currency)
 
