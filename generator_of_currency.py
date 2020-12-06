@@ -38,7 +38,7 @@ def get_currency():
         timeline_end,
         currency_names,
     )
-    print(currencies)
+    print(currencies["USD"])
 
     return jsonify(currencies)
 
@@ -73,8 +73,17 @@ def get_chart_data(begin_date, end_date, currency_names):
                 pass
 
             currency = requests\
-                .get(url, params={"startDate" : begin, "endDate": end }).text
-            currencies[currency_name] = currency
+                .get(url, params={"startDate" : begin, "endDate": end }).json()
+            currency_values = list(
+                map(
+                    lambda data: {
+                        data["Date"]: data["Cur_OfficialRate"]
+                    }, 
+                    currency
+                )
+            )
+            currencies[currency_name] = currency_values
+            print(currency_values)
     return currencies
     
 
