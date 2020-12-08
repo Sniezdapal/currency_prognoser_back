@@ -92,3 +92,15 @@ def make_request(date, currency_name):
 
 
 APP.run(host="0.0.0.0", port=5000, debug=True)
+
+
+class Prognoser():
+    pass
+
+
+class NeuralNetwirk():
+    pass
+
+
+class Query():
+    pass
