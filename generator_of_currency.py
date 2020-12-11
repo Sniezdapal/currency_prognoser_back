@@ -58,39 +58,39 @@ def get_chart_data(begin_date, end_date, currency_names):
             end = end_date.strftime("%Y-%m-%d")
             url = BANK_URL.format(CURRENCY_NUMBERS[currency_name])
 
-            requests.packages.urllib3.disable_warnings()
-            requests.packages.urllib3.util.ssl_\
-                .DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
-            try:
-                requests\
-                    .packages\
-                    .urllib3\
-                    .contrib\
-                    .pyopenssl\
-                    .util.ssl_\
-                    .DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
-            except AttributeError:
-                pass
-
-            currency = requests\
-                .get(url, params={"startDate" : begin, "endDate": end }).json()
-            currency_values = dict(zip(
-                map(
-                    lambda data: data["Date"], 
-                    currency
-                ),
-                map(
-                    lambda data: data["Cur_OfficialRate"], 
-                    currency
-                )
-            ))
-            currencies[currency_name] = currency_values
+            
+            currencies[currency_name] = make_request(url)
             print(currency_values)
     return currencies
     
 
-def make_request(date, currency_name):
-    pass
+def make_request(url):
+    requests.packages.urllib3.disable_warnings()
+    requests.packages.urllib3.util.ssl_\
+        .DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
+    try:
+        requests\
+            .packages\
+            .urllib3\
+            .contrib\
+            .pyopenssl\
+            .util.ssl_\
+            .DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
+    except AttributeError:
+        pass
+    currency = requests\
+        .get(url, params={"startDate" : begin, "endDate": end }).json()
+    currency_values = dict(zip(
+        map(
+            lambda data: data["Date"], 
+            currency
+        ),
+        map(
+            lambda data: data["Cur_OfficialRate"], 
+            currency
+        )
+    ))
+    return currency_values
 
 
 APP.run(host="0.0.0.0", port=5000, debug=True)
