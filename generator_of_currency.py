@@ -38,7 +38,6 @@ def get_currency():
         timeline_end,
         currency_names,
     )
-    print(currencies["USD"])
 
     return jsonify(currencies)
 
@@ -60,7 +59,6 @@ def get_chart_data(begin_date, end_date, currency_names):
 
             
             currencies[currency_name] = make_request(url)
-            print(currency_values)
     return currencies
     
 
