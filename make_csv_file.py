@@ -11,8 +11,8 @@ def import_data_to_csv():
     end_year = 2020
 
     while begin_year < end_year:
-        begin_date = datetime(day=1, month=9, year=begin_year)
-        end_date = datetime(day=1, month=9, year=begin_year+1)
+        begin_date = datetime(day=12, month=12, year=begin_year)
+        end_date = datetime(day=12, month=12, year=begin_year+1)
         begin = begin_date.strftime("%Y-%m-%d")
         end = end_date.strftime("%Y-%m-%d")
         url = BANK_URL.format(CURRENCY_NUMBERS["USD"])

@@ -11,10 +11,12 @@ import urllib3
 import pandas as pd
 from configurations import BANK_URL, CURRENCY_NUMBERS
 from model import currency_prediction
+from flask_cors import cross_origin
 
 
 APP = Flask(__name__)
 
+@cross_origin
 @APP.route("/get_currency", methods=["GET"])
 def get_currency():
     """
@@ -48,7 +50,7 @@ def get_chart_data(begin_date, end_date, currency_names):
             end = end_date.strftime("%Y-%m-%d")
             url = BANK_URL.format(CURRENCY_NUMBERS[currency_name])
             currencies[currency_name] = make_request(url, begin, end)
-            if end_date > datetime.now():
+            if end_date.date() >= datetime.now().date():
                 currencies[currency_name].update(get_currency(end_date, currency_name))
     return currencies
 
