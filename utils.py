@@ -1,5 +1,6 @@
 import json
 import requests
+import pandas as pd
 from datetime import datetime
 
 def make_request(url, begin, end):
@@ -22,7 +23,8 @@ def make_request(url, begin, end):
         .get(url, params={"startDate" : begin, "endDate": end }).json()
     currency_values = dict(zip(
         map(
-            lambda data: int(datetime.strptime(data["Date"][:10], '%Y-%m-%d').timestamp()), 
+            #lambda data: data["Date"][:10], 
+            lambda data: datetime.strptime(data["Date"][:10], '%Y-%m-%d').timestamp(), 
             currency
         ),
         map(
@@ -31,3 +33,8 @@ def make_request(url, begin, end):
         )
     ))
     return currency_values
+
+
+def get_data_from_csv(path):
+        return pd.read_csv(path,header=0, parse_dates=["date"], index_col=0).values
+        

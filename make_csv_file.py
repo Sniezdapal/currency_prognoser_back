@@ -1,11 +1,8 @@
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
-import json
-import requests
-import urllib3
 import pandas as pd
 from utils import make_request
 from configurations import CURRENCY_NUMBERS, BANK_URL
+from utils import get_data_from_csv
 
 def import_data_to_csv():
     usd_data = {}
@@ -42,6 +39,8 @@ def import_data_to_csv():
 
 def main():
     import_data_to_csv()
+    a = get_data_from_csv("data/usd.csv")
+    print(a[:10])
 
 
 if __name__ == "__main__":
