@@ -7,11 +7,11 @@ from utils import get_data_from_csv
 def import_data_to_csv():
     usd_data = {}
     eur_data = {}
-    begin_year = 2019
+    begin_year = 2020
     end_year = 2020
 
-    while begin_year < end_year:
-        begin_date = datetime(day=12, month=12, year=begin_year)
+    while begin_year <= end_year:
+        begin_date = datetime(day=12, month=9, year=begin_year)
         end_date = datetime(day=12, month=12, year=begin_year+1)
         begin = begin_date.strftime("%Y-%m-%d")
         end = end_date.strftime("%Y-%m-%d")

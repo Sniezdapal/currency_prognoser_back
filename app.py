@@ -62,11 +62,11 @@ def get_currency(end, name):
         data = list(dict(get_data_from_csv("data/eur.csv")).values())
     local_end = end.date()
     result = currency_prediction(data=data, end_date=local_end)
-    for res in result.keys():
-        result[res] -= round(random.random() * 0.1, 4)
+    #for res in result.keys():
+    #    result[res] -= round(random.random() * 0.1, 4)
     return result
 
 
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support
-    APP.run(threaded=True, port=5000)
+    APP.run(threaded=True, port=5001)
