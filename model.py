@@ -14,7 +14,7 @@ def currency_prediction(data, end_date):
     begin_date = datetime.now().date()
     while begin_date <= end_date:
         temp = start_ARIMA_forecasting(data, 1,1,0)
-        result[int(begin_date.strftime("%s"))] = temp[0]
+        result[int(begin_date.strftime("%s"))] = round(temp[0], 4)
         data.append(temp)
         begin_date += timedelta(days=1)
     return result

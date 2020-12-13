@@ -48,10 +48,8 @@ def get_chart_data(begin_date, end_date, currency_names):
             end = end_date.strftime("%Y-%m-%d")
             url = BANK_URL.format(CURRENCY_NUMBERS[currency_name])
             currencies[currency_name] = make_request(url, begin, end)
-            print(currencies)
             if end_date > datetime.now():
                 currencies[currency_name].update(get_currency(end_date, currency_name))
-                #get_currency(end_date)
     return currencies
 
 
@@ -62,7 +60,6 @@ def get_currency(end, name):
         data = list(dict(get_data_from_csv("data/eur.csv")).values())
     local_end = end.date()
     result = currency_prediction(data=data, end_date=local_end)
-    print(result)
     return result
 
 

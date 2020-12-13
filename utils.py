@@ -23,7 +23,6 @@ def make_request(url, begin, end):
         .get(url, params={"startDate" : begin, "endDate": end }).json()
     currency_values = dict(zip(
         map(
-            #lambda data: data["Date"][:10], 
             lambda data: datetime.strptime(data["Date"][:10], '%Y-%m-%d').timestamp(), 
             currency
         ),
