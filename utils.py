@@ -1,5 +1,6 @@
 import json
 import requests
+from datetime import datetime
 
 def make_request(url, begin, end):
     requests.packages.urllib3.disable_warnings()
@@ -21,7 +22,7 @@ def make_request(url, begin, end):
         .get(url, params={"startDate" : begin, "endDate": end }).json()
     currency_values = dict(zip(
         map(
-            lambda data: data["Date"], 
+            lambda data: int(datetime.strptime(data["Date"][:10], '%Y-%m-%d').timestamp()), 
             currency
         ),
         map(

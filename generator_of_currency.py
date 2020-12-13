@@ -9,6 +9,7 @@ from dateutil.relativedelta import relativedelta
 from utils import make_request
 import urllib3
 import pandas as pd
+from configurations import BANK_URL, CURRENCY_NUMBERS
 
 
 APP = Flask(__name__)
@@ -57,15 +58,3 @@ def get_chart_data(begin_date, end_date, currency_names):
 
 
 APP.run(host="0.0.0.0", port=5000, debug=True)
-
-
-class Prognoser():
-    pass
-
-
-class NeuralNetwirk():
-    pass
-
-
-class Query():
-    pass
