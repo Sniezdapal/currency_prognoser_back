@@ -1,0 +1,1 @@
+web: gunicorn app:generator_of_currency

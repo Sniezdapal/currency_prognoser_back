@@ -63,5 +63,6 @@ def get_currency(end, name):
     return result
 
 
-
-APP.run(host="0.0.0.0", port=5000, debug=True)
+if __name__ == '__main__':
+    # Threaded option to enable multiple instances for multiple user access support
+    APP.run(threaded=True, port=5000)
