@@ -5,9 +5,11 @@ from flask import (
 )
 
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import json
 import requests
 import urllib3
+import pandas as pd
 
 
 APP = Flask(__name__)
@@ -29,6 +31,7 @@ def get_currency():
             ]
         }
     """
+    import_data_to_csv()
     data = request.json
     timeline_begin = datetime.fromtimestamp(int(data["begin"]))
     timeline_end = datetime.fromtimestamp(int(data["end"]))
@@ -58,11 +61,11 @@ def get_chart_data(begin_date, end_date, currency_names):
             url = BANK_URL.format(CURRENCY_NUMBERS[currency_name])
 
             
-            currencies[currency_name] = make_request(url)
+            currencies[currency_name] = make_request(url, begin, end)
     return currencies
     
 
-def make_request(url):
+def make_request(url, begin, end):
     requests.packages.urllib3.disable_warnings()
     requests.packages.urllib3.util.ssl_\
         .DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
@@ -89,6 +92,8 @@ def make_request(url):
         )
     ))
     return currency_values
+
+
 
 
 APP.run(host="0.0.0.0", port=5000, debug=True)
