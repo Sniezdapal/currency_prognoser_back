@@ -4,7 +4,8 @@ import json
 import requests
 import urllib3
 import pandas as pd
-from generator_of_currency import make_request
+from utils import make_request
+from configurations import CURRENCY_NUMBERS, BANK_URL
 
 def import_data_to_csv():
     usd_data = {}
@@ -37,3 +38,11 @@ def import_data_to_csv():
     )
     usd_df.to_csv('data/usd.csv')
     eur_df.to_csv('data/eur.csv')
+
+
+def main():
+    import_data_to_csv()
+
+
+if __name__ == "__main__":
+    main()
