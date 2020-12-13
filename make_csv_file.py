@@ -7,7 +7,7 @@ from utils import get_data_from_csv
 def import_data_to_csv():
     usd_data = {}
     eur_data = {}
-    begin_year = 2016
+    begin_year = 2019
     end_year = 2020
 
     while begin_year < end_year:

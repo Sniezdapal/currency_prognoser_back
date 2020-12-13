@@ -3,7 +3,7 @@ from flask import (
     jsonify,
     request,
 )
-
+import random
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from utils import make_request, get_data_from_csv
@@ -62,6 +62,8 @@ def get_currency(end, name):
         data = list(dict(get_data_from_csv("data/eur.csv")).values())
     local_end = end.date()
     result = currency_prediction(data=data, end_date=local_end)
+    for res in result.keys():
+        result[res] -= round(random.random() * 0.1, 4)
     return result
 
 
