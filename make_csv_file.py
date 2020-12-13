@@ -40,7 +40,8 @@ def import_data_to_csv():
 def main():
     import_data_to_csv()
     a = get_data_from_csv("data/usd.csv")
-    print(a[:10])
+    a = dict(a)
+    print(list(a.values()))
 
 
 if __name__ == "__main__":

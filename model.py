@@ -8,18 +8,20 @@ def start_ARIMA_forecasting(Actual, P, D, Q):
 	prediction = model_fit.forecast()[0]
 	return prediction
 
-rates = [1,1.5,2,4,6,8,16,1, 100, 0, 0, 100, 199, 0, 0, 100]
 
 def currency_prediction(data, end_date):
-    result = data
+    result = {}
     begin_date = datetime.now().date()
     while begin_date <= end_date:
-        result.append(start_ARIMA_forecasting(result, 2,1,0))
+        temp = start_ARIMA_forecasting(data, 1,1,0)
+        result[int(begin_date.strftime("%s"))] = temp[0]
+        data.append(temp)
         begin_date += timedelta(days=1)
     return result
 
 
 if __name__ == "__main__":
+    rates = [1,1.5,2,4,6,8,16,1, 100, 0, 0, 100, 199, 0, 0, 100]
     end = datetime(day=1, month=1, year=2021).date()
     a = currency_prediction(rates, end)
     print(a)
