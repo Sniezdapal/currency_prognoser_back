@@ -12,11 +12,6 @@ import pandas as pd
 
 
 APP = Flask(__name__)
-CURRENCY_NUMBERS = {
-    "USD": 145,
-    "EUR": 292,
-}
-BANK_URL = "https://www.nbrb.by/API/ExRates/Rates/Dynamics/{0}"
 
 @APP.route("/get_currency", methods=["GET"])
 def get_currency():
