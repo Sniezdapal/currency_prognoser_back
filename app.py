@@ -115,7 +115,7 @@ def get_chart_data(begin_date, end_date, currency_names, model):
             if end_date.date() >= datetime.now().date():
                 currencies[currency_name].update(get_currency(end_date, currency_name))
             if not model == "autoregressive":
-                currencies[currency_name] = { date:(int(currency) + (random.randint(0, 150) * 0.001)) for date, currency in currencies[currency_name].items()} 
+                currencies[currency_name] = [ {date:(int(currency) + (random.randint(0, 150) * 0.001))} for date, currency in currencies[currency_name].items()] 
     return currencies
 
 
