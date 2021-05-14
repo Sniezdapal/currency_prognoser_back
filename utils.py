@@ -4,6 +4,8 @@ import pandas as pd
 from datetime import datetime
 
 def make_request(url, begin, end):
+    print(begin)
+    print(end)
     requests.packages.urllib3.disable_warnings()
     requests.packages.urllib3.util.ssl_\
         .DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
@@ -20,7 +22,11 @@ def make_request(url, begin, end):
         pass
 
     currency = requests\
-        .get(url, params={"startDate" : begin, "endDate": end }).json()
+        .get(url, params={"startDate" : begin, "endDate": end })
+    if not currency:
+        return {}
+    else:
+        currency = currency.json()
     currency_values = dict(zip(
         map(
             lambda data: int(datetime.strptime(data["Date"][:10], '%Y-%m-%d').timestamp()), 
@@ -52,6 +58,8 @@ def make_stocks_request(url):
 
     stocks = requests\
         .get(url).json().get("results")
+    if not stocks:
+        return {}
     stocks_values = dict(zip(
         map(
             lambda data: int(data["t"]), 

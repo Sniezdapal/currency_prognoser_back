@@ -11,7 +11,7 @@ import urllib3
 import pandas as pd
 from configurations import BANK_URL, CURRENCY_NUMBERS, STOCK_URL
 from model import currency_prediction
-from flask_cors import cross_origin
+from flask_cors import CORS
 import random
 
 """
@@ -57,8 +57,9 @@ responce -
 
 
 APP = Flask(__name__)
+CORS(APP)
 
-@cross_origin
+#@cross_origin
 @APP.route("/get_currency", methods=["GET", "POST"])
 def get_currency():
     """
@@ -75,6 +76,7 @@ def get_currency():
     timeline_begin = datetime.fromtimestamp(int(data["begin"]))
     timeline_end = datetime.fromtimestamp(int(data["end"]))
     currency_names = data["currency_names"]
+    print(data)
     model = data["model"]
     currencies = get_chart_data(
         timeline_begin,
@@ -82,10 +84,11 @@ def get_currency():
         currency_names,
         model
     )
+    print(currencies)
     return jsonify(currencies)
 
 
-@cross_origin
+#@cross_origin
 @APP.route("/get_stock", methods=["GET", "POST"])
 def get_stock():
     """
@@ -113,7 +116,7 @@ def get_stock():
     return jsonify(stock)
 
 
-@cross_origin
+#@cross_origin
 @APP.route("/configuration", methods=["GET"])
 def configuration():
     return jsonify(
@@ -136,17 +139,19 @@ def get_chart_data(begin_date, end_date, currency_names, model):
     currencies = {}
     if begin_date < datetime.now():
         for currency_name in currency_names:
+            print(currency_name)
             currency_name = currency_name.upper()
             begin = begin_date.strftime("%Y-%m-%d")
             end = end_date.strftime("%Y-%m-%d")
-            url = BANK_URL.format(currency_name)
+            url = BANK_URL.format(CURRENCY_NUMBERS[currency_name])
+            print(url)
             currencies[currency_name] = make_request(url, begin, end)
             if end_date.date() >= datetime.now().date():
                 curens = get_currency(end_date, currency_name)
                 if not model == "autoregressive":
                     curens = { date:(int(currency) + (random.randint(0, 150) * 0.001)) for date, currency in curens.items()} 
                 currencies[currency_name].update(curens)
-            return currencies
+        return currencies
 
 
 def get_stock_chart_data(begin_date, end_date, currency_names, model, name="not_stock"):
@@ -168,7 +173,7 @@ def get_stock_chart_data(begin_date, end_date, currency_names, model, name="not_
                     else:
                         curens = { date:(int(currency) + (random.randint(0, 150) * 0.001)) for date, currency in curens.items()} 
                 currencies[currency_name].update(curens)
-            return currencies
+        return currencies
 
 
 def get_currency(end, name):  
