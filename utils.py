@@ -34,6 +34,36 @@ def make_request(url, begin, end):
     return currency_values
 
 
+def make_stocks_request(url):
+    requests.packages.urllib3.disable_warnings()
+    requests.packages.urllib3.util.ssl_\
+        .DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
+
+    try:
+        requests\
+            .packages\
+            .urllib3\
+            .contrib\
+            .pyopenssl\
+            .util.ssl_\
+            .DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
+    except AttributeError:
+        pass
+
+    stocks = requests\
+        .get(url).json().get("results")
+    stocks_values = dict(zip(
+        map(
+            lambda data: int(data["t"]), 
+            stocks
+        ),
+        map(
+            lambda data: data["vw"], 
+            stocks
+        )
+    ))
+    return stocks_values
+
 def get_data_from_csv(path):
         return pd.read_csv(path,header=0, parse_dates=["date"], index_col=0).values
         
