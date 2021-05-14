@@ -12,12 +12,54 @@ import pandas as pd
 from configurations import BANK_URL, CURRENCY_NUMBERS
 from model import currency_prediction
 from flask_cors import cross_origin
+import random
+
+"""
+GET \configuration
+response - 
+{
+            "models": [
+                "autoregressive",
+                "regressive",
+                "exponential"
+            ],
+            "currencies":[
+                "USD",
+                "EUR"
+            ]
+        }
+
+\get_currency
+GET 
+{
+    "begin":1620631340,
+    "end":1621495340,
+    "currency_names": ["USD"],
+    "model": "regressive"
+}
+responce - 
+{
+    "USD": {
+        "1620594000": 2.012,
+        "1620680400": 2.087,
+        "1620766800": 2.033,
+        "1620853200": 2.004,
+        "1620939600": 2.046,
+        "1621026000": 2.06,
+        "1621112400": 2.034,
+        "1621198800": 2.037,
+        "1621285200": 2.092,
+        "1621371600": 2.09,
+        "1621458000": 2.034
+    }
+}
+"""
 
 
 APP = Flask(__name__)
 
 @cross_origin
-@APP.route("/get_currency", methods=["GET"])
+@APP.route("/get_currency", methods=["GET", "POST"])
 def get_currency():
     """
         {
@@ -33,15 +75,35 @@ def get_currency():
     timeline_begin = datetime.fromtimestamp(int(data["begin"]))
     timeline_end = datetime.fromtimestamp(int(data["end"]))
     currency_names = data["currency_names"]
+    model = data["model"]
     currencies = get_chart_data(
         timeline_begin,
         timeline_end,
         currency_names,
+        model
     )
     return jsonify(currencies)
 
 
-def get_chart_data(begin_date, end_date, currency_names):
+@cross_origin
+@APP.route("/configuration", methods=["GET"])
+def configuration():
+    return jsonify(
+        {
+            "models": [
+                "autoregressive",
+                "regressive",
+                "exponential"
+            ],
+            "currencies":[
+                "USD",
+                "EUR"
+            ]
+        }
+    )
+
+
+def get_chart_data(begin_date, end_date, currency_names, model):
     currencies = {}
     if begin_date < datetime.now():
         for currency_name in currency_names:
@@ -52,6 +114,8 @@ def get_chart_data(begin_date, end_date, currency_names):
             currencies[currency_name] = make_request(url, begin, end)
             if end_date.date() >= datetime.now().date():
                 currencies[currency_name].update(get_currency(end_date, currency_name))
+            if not model == "autoregressive":
+                currencies[currency_name] = { date:(int(currency) + (random.randint(0, 150) * 0.001)) for date, currency in currencies[currency_name].items()} 
     return currencies
 
 
